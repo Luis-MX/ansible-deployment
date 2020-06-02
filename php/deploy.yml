@@ -19,10 +19,6 @@
       git: 
         repo: https://github.com/Luis-MX/php-mysql-crud.git
         dest: "{{ubicacion_proyecto}}"
-    - name: Estableciendo ServerName
-      become: yes
-      command:
-        cmd: echo 'ServerName 0.0.0.0' | tee -a /etc/apache2/apache2.conf
     - name: Verificar presencia de pymysql
       pip:
         name: pymysql
