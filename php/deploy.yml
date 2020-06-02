@@ -1,8 +1,8 @@
 ---
 
 - name: Servicio de despliegue para aplicación php
-  hosts: test_group
-  remote_user: vagrant
+  hosts: aws_ec2
+  remote_user: ubuntu
   vars:
     - ubicacion_proyecto: /var/www/html/test
     - bd: crud
