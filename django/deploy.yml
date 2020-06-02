@@ -65,7 +65,7 @@
     - name: Configurar sitio de apache
       become: yes
       copy:
-        src: deploy_files/apache-site.txt
+        src: apache-site.txt
         dest: /etc/apache2/sites-available/luis.conf
     - name: Habilitar sitio
       become: yes
