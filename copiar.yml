@@ -1,0 +1,24 @@
+---
+
+- name: Copiar archivo a temporal
+  hosts: aws_ec2
+  remote_user: vagrant
+  tasks:
+    - name: Copiar archivo
+      copy:
+        src: rootkey.csv
+        dest: /tmp/
+        mode: 400
+        group: www-data
+- name: Copiar pagina web
+  hosts: all
+  become: True
+  tasks:
+    - name: Instalar apache
+      apt:
+        name: apache2
+        state: present
+    - name: Copiando index.html
+      copy:
+        src: index.html
+        dest: /var/www/html/

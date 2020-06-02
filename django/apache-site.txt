@@ -1,0 +1,34 @@
+Define RUTA_PROYECTO /home/vagrant/app
+Define RUTA_ENV /home/vagrant/app/.env
+Define RUTA_WSGI ${RUTA_PROYECTO}/django_todo
+
+WSGIDaemonProcess django_todo python-path=${RUTA_PROYECTO}:${RUTA_ENV}/lib/python3.6/site-packages
+
+WSGIProcessGroup django_todo
+
+
+# Aqui indicamos que el proyecto va a estar en la raiz del sitio
+WSGIScriptAlias / ${RUTA_WSGI}/wsgi.py process-group=django_todo
+
+WSGIPythonPath ${RUTA_PROYECTO}
+
+LogLevel info
+
+ErrorLog "${RUTA_PROYECTO}/log"
+CustomLog "${RUTA_PROYECTO}/log" common
+
+Alias /static/ ${RUTA_PROYECTO}/static
+<Directory ${RUTA_PROYECTO}/static>
+    Require all granted
+</Directory>
+
+Alias /media/ ${RUTA_PROYECTO}/media
+<Directory ${RUTA_PROYECTO}/media>
+    Require all granted
+</Directory>
+
+<Directory ${RUTA_WSGI}>
+    <Files wsgi.py>
+        Require all granted
+    </Files>
+</Directory>

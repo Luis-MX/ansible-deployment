@@ -1,0 +1,27 @@
+---
+
+- name: Playbook con variables y templates
+  hosts: all
+  remote_user: vagrant
+  become: True
+  vars:
+    - mi_var: Esta variable fue creada en una HP Envy
+    - lista: [1, 2, 3, False, "Luis", "Enrique"]
+    - paquetes:
+        - tree
+        - apache2
+        - docker
+        - node
+  tasks:
+    - name: Copiar template
+      #vars:
+        #mi_var: Variable sobreescrita
+      template:
+        src: template.j2
+        dest: /var/www/html/template.html
+        group: www-data
+  handlers:
+    - name: reiniciar apache2
+      service:
+        name: apache2
+        state: restarted

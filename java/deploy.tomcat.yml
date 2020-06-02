@@ -1,0 +1,57 @@
+---
+
+- name: Servicio de despliegue para aplicación java
+  hosts: test_group
+  remote_user: vagrant
+  vars:
+    - ubicacion_despliegue: /var/lib/tomcat9/webapps/
+    - ubicacion_codigo: /home/vagrant/test/
+    - db: controlescolar
+    - db_user: usercontrolescolar
+    - db_password: usercontrolescolar123
+  tasks:
+    - name: Instalando requisitos para el sistema
+      apt:
+        name: ["tomcat9", "python3-pip", "mysql-server"]      
+        update_cache: yes
+        state: present
+    - name: Clonar proyecto
+      git: 
+        repo: https://github.com/Luis-MX/Test1.git
+        dest: "{{ubicacion_codigo}}"
+    - name: Verificar presencia de pymysql
+      pip:
+        name: pymysql
+        state: present
+    - name: Cambiar tipo de autenticacion
+      command:
+        cmd: sudo mysql -u root -proot -e "use mysql;UPDATE user SET authentication_string=PASSWORD('root') WHERE User='root';UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE User='root';flush privileges;"
+    - name: crear base de datos
+      become: yes
+      mysql_db:
+        login_user: root
+        login_password: root
+        name: "{{db}}"
+        state: present
+    - name: Restore database
+      mysql_db:
+        login_user: root
+        login_password: root
+        name: controlescolar
+        state: import
+        target: "{{ubicacion_codigo}}controlescolar.sql"
+    - name: Crear usuario
+      become: yes
+      mysql_user:
+        login_user: root
+        login_password: root
+        name: "{{db_user}}"
+        password: "{{ db_password }}"
+        priv: '{{db}}.*:ALL'
+        host: localhost
+        state: present
+    - name: Cambiar tipo de autenticacion
+      become: yes
+      command:
+        cmd: cp "{{ubicacion_codigo}}ControlPeliculas.war" "{{ubicacion_despliegue}}"
+
