@@ -1,3 +1,8 @@
-ansible_user: vagrant
-ansible_become: True
+ansible_user: luisortramirez2211
+#ansible_become: False
 ansible_python_interpreter: /usr/bin/python3
+# Use the YAML callback plugin.
+stdout_callback: yaml
+# Use the stdout_callback when running ad-hoc commands.
+bin_ansible_callbacks: True
+ansible_private_key_file: /home/luis/.ssh/gcloud.pub

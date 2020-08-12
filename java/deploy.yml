@@ -1,11 +1,11 @@
 ---
 
 - name: Servicio de despliegue para aplicación java
-  hosts: test_group
-  remote_user: vagrant
+  hosts: aws_ec2
+  remote_user: ubuntu
   vars:
     - ubicacion_despliegue: /var/lib/tomcat9/webapps/
-    - ubicacion_codigo: /home/vagrant/test/
+    - ubicacion_codigo: /home/ubuntu/test/
     - db: controlescolar
     - db_user: usercontrolescolar
     - db_password: usercontrolescolar123
